@@ -2,14 +2,17 @@ package com.kuvarin.taskcrud.service;
 
 import com.kuvarin.taskcrud.aspect.annotation.LogException;
 import com.kuvarin.taskcrud.dto.TaskRequestDTO;
+import com.kuvarin.taskcrud.dto.TaskResponseDTO;
 import com.kuvarin.taskcrud.exception.TaskNotFoundException;
 import com.kuvarin.taskcrud.exception.TasksNotFoundException;
+import com.kuvarin.taskcrud.mapper.TaskMapper;
 import com.kuvarin.taskcrud.model.Task;
 import com.kuvarin.taskcrud.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TaskService {
@@ -22,24 +25,20 @@ public class TaskService {
     }
 
     @LogException
-    public Task getTask(Long id) throws TaskNotFoundException {
-        return taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException(String.format("Task with id: %d not found", id)));
+    public TaskResponseDTO getTask(Long id) throws TaskNotFoundException {
+        Task task = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException(String.format("Task with id: %d not found", id)));
+        return TaskMapper.taskToDto(task);
     }
 
     @LogException
-    public Task saveTask(TaskRequestDTO taskDTO) {
-        Task task = new Task();
-
-        task.setTitle(taskDTO.getTitle());
-        task.setDescription(taskDTO.getDescription());
-        task.setUserId(taskDTO.getUserId());
-
-        return taskRepository.save(task);
+    public TaskResponseDTO saveTask(TaskRequestDTO taskDTO) {
+        Task task = TaskMapper.requestToTask(taskDTO);
+        return TaskMapper.taskToDto(taskRepository.save(task));
     }
 
     @Transactional
     @LogException
-    public Task updateTask(Long id, TaskRequestDTO taskDTO) throws TaskNotFoundException {
+    public TaskResponseDTO updateTask(Long id, TaskRequestDTO taskDTO) throws TaskNotFoundException {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFoundException(String.format("Task with id: %d not found", id)));
 
@@ -54,7 +53,7 @@ public class TaskService {
         if (taskDTO.getUserId() != null) {
             task.setUserId(taskDTO.getUserId());
         }
-        return taskRepository.save(task);
+        return TaskMapper.taskToDto(taskRepository.save(task));
     }
 
     @LogException
@@ -64,12 +63,12 @@ public class TaskService {
     }
 
     @LogException
-    public List<Task> getAll() throws TasksNotFoundException {
+    public List<TaskResponseDTO> getAll() throws TasksNotFoundException {
         List<Task> tasks = taskRepository.findAll();
         if (tasks.isEmpty()) {
             throw new TasksNotFoundException("Tasks not found");
         }
-        return tasks;
+        return tasks.stream().map(TaskMapper::taskToDto).collect(Collectors.toList());
     }
 
 

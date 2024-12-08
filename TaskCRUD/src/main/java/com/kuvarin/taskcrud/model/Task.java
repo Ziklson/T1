@@ -3,8 +3,10 @@ package com.kuvarin.taskcrud.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "task")
 public class Task {
     @Id
     @GeneratedValue
