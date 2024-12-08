@@ -1,8 +1,7 @@
 package com.kuvarin.taskcrud.service;
 
 import com.kuvarin.taskcrud.aspect.annotation.LogException;
-import com.kuvarin.taskcrud.dto.TaskRequestDTO;
-import com.kuvarin.taskcrud.dto.TaskResponseDTO;
+import com.kuvarin.taskcrud.dto.TaskDTO;
 import com.kuvarin.taskcrud.exception.TaskNotFoundException;
 import com.kuvarin.taskcrud.exception.TasksNotFoundException;
 import com.kuvarin.taskcrud.mapper.TaskMapper;
@@ -25,20 +24,20 @@ public class TaskService {
     }
 
     @LogException
-    public TaskResponseDTO getTask(Long id) throws TaskNotFoundException {
+    public TaskDTO getTask(Long id) throws TaskNotFoundException {
         Task task = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException(String.format("Task with id: %d not found", id)));
         return TaskMapper.taskToDto(task);
     }
 
     @LogException
-    public TaskResponseDTO saveTask(TaskRequestDTO taskDTO) {
+    public TaskDTO saveTask(TaskDTO taskDTO) {
         Task task = TaskMapper.requestToTask(taskDTO);
         return TaskMapper.taskToDto(taskRepository.save(task));
     }
 
     @Transactional
     @LogException
-    public TaskResponseDTO updateTask(Long id, TaskRequestDTO taskDTO) throws TaskNotFoundException {
+    public TaskDTO updateTask(Long id, TaskDTO taskDTO) throws TaskNotFoundException {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFoundException(String.format("Task with id: %d not found", id)));
 
@@ -63,7 +62,7 @@ public class TaskService {
     }
 
     @LogException
-    public List<TaskResponseDTO> getAll() throws TasksNotFoundException {
+    public List<TaskDTO> getAll() throws TasksNotFoundException {
         List<Task> tasks = taskRepository.findAll();
         if (tasks.isEmpty()) {
             throw new TasksNotFoundException("Tasks not found");

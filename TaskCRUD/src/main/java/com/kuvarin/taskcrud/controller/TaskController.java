@@ -1,7 +1,6 @@
 package com.kuvarin.taskcrud.controller;
 
-import com.kuvarin.taskcrud.dto.TaskRequestDTO;
-import com.kuvarin.taskcrud.dto.TaskResponseDTO;
+import com.kuvarin.taskcrud.dto.TaskDTO;
 import com.kuvarin.taskcrud.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,22 +27,22 @@ public class TaskController {
     }
 
     @GetMapping("/{id}")
-    public TaskResponseDTO getTask(@PathVariable Long id) {
+    public TaskDTO getTask(@PathVariable Long id) {
         return taskService.getTask(id);
     }
 
     @GetMapping
-    public List<TaskResponseDTO> getTasks() {
+    public List<TaskDTO> getTasks() {
         return taskService.getAll();
     }
 
     @PostMapping
-    public TaskResponseDTO createTask(@RequestBody TaskRequestDTO task) {
+    public TaskDTO createTask(@RequestBody TaskDTO task) {
         return taskService.saveTask(task);
     }
 
     @PutMapping("/{id}")
-    public TaskResponseDTO updateTask(@PathVariable Long id, @RequestBody TaskRequestDTO task) {
+    public TaskDTO updateTask(@PathVariable Long id, @RequestBody TaskDTO task) {
         return taskService.updateTask(id, task);
     }
 
