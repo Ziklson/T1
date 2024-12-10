@@ -2,16 +2,14 @@ package com.kuvarin.taskcrud.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Builder
+@ToString
 public class TaskDTO {
 
     @JsonProperty("title")
@@ -22,6 +20,9 @@ public class TaskDTO {
 
     @JsonProperty("userId")
     Long userId;
+
+    @JsonProperty("status")
+    String taskStatus;
 
 
 }

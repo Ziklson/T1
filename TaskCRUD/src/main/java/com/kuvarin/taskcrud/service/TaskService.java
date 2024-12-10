@@ -2,8 +2,10 @@ package com.kuvarin.taskcrud.service;
 
 import com.kuvarin.taskcrud.aspect.annotation.LogException;
 import com.kuvarin.taskcrud.dto.TaskDTO;
+import com.kuvarin.taskcrud.enums.TaskStatus;
 import com.kuvarin.taskcrud.exception.TaskNotFoundException;
 import com.kuvarin.taskcrud.exception.TasksNotFoundException;
+import com.kuvarin.taskcrud.kafka.KafkaTaskProducer;
 import com.kuvarin.taskcrud.mapper.TaskMapper;
 import com.kuvarin.taskcrud.model.Task;
 import com.kuvarin.taskcrud.repository.TaskRepository;
@@ -18,9 +20,12 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
 
+    private final KafkaTaskProducer kafkaTaskProducer;
+
     @Autowired
-    public TaskService (TaskRepository taskRepository) {
+    public TaskService (TaskRepository taskRepository, KafkaTaskProducer kafkaTaskProducer) {
         this.taskRepository = taskRepository;
+        this.kafkaTaskProducer = kafkaTaskProducer;
     }
 
     @LogException
@@ -52,6 +57,12 @@ public class TaskService {
         if (taskDTO.getUserId() != null) {
             task.setUserId(taskDTO.getUserId());
         }
+
+        if (!taskDTO.getTaskStatus().equals(task.getTaskStatus().name())) {
+            task.setTaskStatus(TaskStatus.valueOf(taskDTO.getTaskStatus()));
+            notifyTaskStatusUpdate(taskDTO);
+        }
+
         return TaskMapper.taskToDto(taskRepository.save(task));
     }
 
@@ -68,6 +79,10 @@ public class TaskService {
             throw new TasksNotFoundException("Tasks not found");
         }
         return tasks.stream().map(TaskMapper::taskToDto).collect(Collectors.toList());
+    }
+
+    private void notifyTaskStatusUpdate(TaskDTO taskDTO) {
+        kafkaTaskProducer.sendTaskUpdate(taskDTO);
     }
 
 

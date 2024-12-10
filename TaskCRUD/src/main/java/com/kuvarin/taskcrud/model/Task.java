@@ -1,9 +1,7 @@
 package com.kuvarin.taskcrud.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.kuvarin.taskcrud.enums.TaskStatus;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -24,5 +22,8 @@ public class Task {
     private String description;
 
     private Long userId;
+
+    @Enumerated(EnumType.STRING)
+    private TaskStatus taskStatus;
 
 }

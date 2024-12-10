@@ -1,6 +1,7 @@
 package com.kuvarin.taskcrud.mapper;
 
 import com.kuvarin.taskcrud.dto.TaskDTO;
+import com.kuvarin.taskcrud.enums.TaskStatus;
 import com.kuvarin.taskcrud.model.Task;
 
 public class TaskMapper {
@@ -10,6 +11,7 @@ public class TaskMapper {
                 .title(taskDto.getTitle())
                 .description(taskDto.getDescription())
                 .userId(taskDto.getUserId())
+                .taskStatus(TaskStatus.valueOf(taskDto.getTaskStatus()))
                 .build();
     }
 
@@ -18,6 +20,7 @@ public class TaskMapper {
                 .title(task.getTitle())
                 .description(task.getDescription())
                 .userId(task.getUserId())
+                .taskStatus(task.getTaskStatus().name())
                 .build();
     }
 }
