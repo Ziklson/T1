@@ -1,12 +1,29 @@
 package com.kuvarin.taskcrud.model;
 
+import com.kuvarin.taskcrud.enums.TaskStatus;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.Setter;
+import lombok.Builder;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.EnumType;
+
+
 
 @Entity
 @Table(name = "task")
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@Getter
+@Setter
+@Builder
 public class Task {
     @Id
     @GeneratedValue
@@ -18,56 +35,7 @@ public class Task {
 
     private Long userId;
 
-    public Task () {
+    @Enumerated(EnumType.STRING)
+    private TaskStatus taskStatus;
 
-    }
-
-    public Task(Long id, String title, String description, Long userId) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.userId = userId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public String toString() {
-        return "Task{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", userId=" + userId +
-                '}';
-    }
 }
