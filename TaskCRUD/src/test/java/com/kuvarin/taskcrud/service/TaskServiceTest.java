@@ -7,7 +7,6 @@ import com.kuvarin.taskcrud.exception.TasksNotFoundException;
 import com.kuvarin.taskcrud.kafka.KafkaTaskProducer;
 import com.kuvarin.taskcrud.model.Task;
 import com.kuvarin.taskcrud.repository.TaskRepository;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +20,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;

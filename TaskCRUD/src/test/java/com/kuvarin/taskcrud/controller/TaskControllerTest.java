@@ -5,7 +5,6 @@ import com.kuvarin.taskcrud.container.PostgresContainer;
 import com.kuvarin.taskcrud.dto.TaskDTO;
 import com.kuvarin.taskcrud.enums.TaskStatus;
 import com.kuvarin.taskcrud.repository.TaskRepository;
-import com.kuvarin.taskcrud.service.TaskService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,7 +18,11 @@ import com.kuvarin.taskcrud.model.Task;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 
