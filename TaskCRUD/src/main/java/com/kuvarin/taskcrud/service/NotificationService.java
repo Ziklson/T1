@@ -1,6 +1,7 @@
 package com.kuvarin.taskcrud.service;
 
 
+import com.kuvarin.taskcrud.config.MailConfig;
 import com.kuvarin.taskcrud.dto.TaskDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,18 +19,14 @@ public class NotificationService {
 
     private final JavaMailSender mailSender;
 
-    @Value("${notification.service.mail.no-replay}")
-    private String noReplay;
-
-    @Value("${notification.service.mail.to}")
-    private String to;
+    private final MailConfig mailConfig;
 
 
     public void sendNotification(List<TaskDTO> messages) {
         for (TaskDTO message: messages) {
             SimpleMailMessage emailMessage = new SimpleMailMessage();
-            emailMessage.setFrom(noReplay);
-            emailMessage.setTo(to);
+            emailMessage.setFrom(mailConfig.getNoReply());
+            emailMessage.setTo(mailConfig.getDefaultRecipient());
             emailMessage.setSubject("Task Status Updated");
             emailMessage.setText(message.toString());
             mailSender.send(emailMessage);

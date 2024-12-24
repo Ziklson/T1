@@ -1,6 +1,6 @@
 package com.kuvarin.taskcrud.service;
 
-import com.kuvarin.taskcrud.aspect.annotation.LogException;
+import com.kuvarin.starter.aspect.annotation.LogException;
 import com.kuvarin.taskcrud.dto.TaskDTO;
 import com.kuvarin.taskcrud.enums.TaskStatus;
 import com.kuvarin.taskcrud.exception.TaskNotFoundException;
@@ -67,9 +67,10 @@ public class TaskService {
     }
 
     @LogException
-    public void deleteTask(Long id) throws TaskNotFoundException {
+    public String deleteTask(Long id) throws TaskNotFoundException {
         Task task = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException(String.format("Task with id: %d not found", id)));
         taskRepository.delete(task);
+        return String.format("Task with ID: %d was removed successfully", id);
     }
 
     @LogException

@@ -1,5 +1,6 @@
 package com.kuvarin.taskcrud.controller;
 
+import com.kuvarin.starter.aspect.annotation.LogController;
 import com.kuvarin.taskcrud.dto.TaskDTO;
 import com.kuvarin.taskcrud.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,28 +27,33 @@ public class TaskController {
         this.taskService = taskService;
     }
 
+    @LogController
     @GetMapping("/{id}")
     public TaskDTO getTask(@PathVariable Long id) {
         return taskService.getTask(id);
     }
 
+    @LogController
     @GetMapping
     public List<TaskDTO> getTasks() {
         return taskService.getAll();
     }
 
+    @LogController
     @PostMapping
     public TaskDTO createTask(@RequestBody TaskDTO task) {
         return taskService.saveTask(task);
     }
 
+    @LogController
     @PutMapping("/{id}")
     public TaskDTO updateTask(@PathVariable Long id, @RequestBody TaskDTO task) {
         return taskService.updateTask(id, task);
     }
 
+    @LogController
     @DeleteMapping("/{id}")
-    public void deleteTask(@PathVariable Long id) {
-        taskService.deleteTask(id);
+    public String deleteTask(@PathVariable Long id) {
+        return taskService.deleteTask(id);
     }
 }

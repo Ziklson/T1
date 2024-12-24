@@ -1,6 +1,6 @@
 package com.kuvarin.taskcrud.kafka;
 
-import com.kuvarin.taskcrud.aspect.annotation.LogException;
+import com.kuvarin.starter.aspect.annotation.LogException;
 import com.kuvarin.taskcrud.dto.TaskDTO;
 import com.kuvarin.taskcrud.service.NotificationService;
 import lombok.RequiredArgsConstructor;
